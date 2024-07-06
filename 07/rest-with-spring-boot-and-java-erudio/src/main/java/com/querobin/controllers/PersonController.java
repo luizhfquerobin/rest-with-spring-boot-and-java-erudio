@@ -4,13 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.querobin.model.Person;
+import com.querobin.data.vo.v1.PersonVO;
 import com.querobin.services.PersonServices;
 
 @RestController
@@ -21,24 +18,30 @@ public class PersonController {
 	private PersonServices service;
 	// private PersonServices services = new PersonServices();
 
-	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<Person> findAll() {
+	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<PersonVO> findAll() {
 		return service.findAll();
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public Person findById(@PathVariable(value = "id") String id) {
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public PersonVO findById(@PathVariable(value = "id") Long id) {
 		return service.findById(id);
 	}
 
-	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public Person create(@RequestBody Person person) {
+	@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public PersonVO create(@RequestBody PersonVO person) {
 		return service.create(person);
 	}
 
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void deleteById(@PathVariable(value = "id") String id) {
+	@PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public PersonVO update(@RequestBody PersonVO person) {
+		return service.update(person);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deleteById(@PathVariable(value = "id") Long id) {
 		service.delete(id);
+		return ResponseEntity.noContent().build();
 	}
 
 }
