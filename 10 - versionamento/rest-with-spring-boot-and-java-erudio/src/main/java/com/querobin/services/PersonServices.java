@@ -6,9 +6,12 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.dozermapper.core.Mapper;
 import com.querobin.data.vo.v1.PersonVO;
+import com.querobin.data.vo.v2.PersonVOV2;
 import com.querobin.exceptions.ResourceNotFoundException;
 import com.querobin.mapper.DozerMapper;
+import com.querobin.mapper.custom.PersonMapper;
 import com.querobin.model.Person;
 import com.querobin.repositories.PersonRepositorie;
 
@@ -19,6 +22,9 @@ public class PersonServices {
 
 	@Autowired
 	PersonRepositorie repository;
+
+	@Autowired
+	PersonMapper mapper;
 
 	public List<PersonVO> findAll() {
 
@@ -37,8 +43,16 @@ public class PersonServices {
 	}
 
 	public PersonVO create(PersonVO person) {
+		logger.info("Creating one person!");
 		var entity = DozerMapper.parseObject(person, Person.class);
-		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+		var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+		return vo;
+	}
+
+	public PersonVOV2 createV2(PersonVOV2 person) {
+		logger.info("Creating one person with V2!");
+		var entity = mapper.convertVoToEntity(person);
+		var vo = mapper.convertEntityToVo(repository.save(entity));
 		return vo;
 	}
 
@@ -53,7 +67,7 @@ public class PersonServices {
 		entity.setAddress(person.getAddress());
 		entity.setGender(person.getGender());
 
-		var vo =  DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+		var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
 		return vo;
 	}
 
