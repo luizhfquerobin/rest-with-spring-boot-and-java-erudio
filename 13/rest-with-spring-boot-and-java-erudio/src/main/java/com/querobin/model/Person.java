@@ -1,30 +1,35 @@
-package com.querobin.data.vo.v1;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+package com.querobin.model;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "address", "first_name", "last_name", "gender"})
-public class PersonVO implements Serializable {
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "person")
+public class Person implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@JsonProperty("first_name")
+	@Column(name = "first_name", nullable = false, length = 80)
 	private String firstName;
-
-	@JsonProperty("last_name")
+	@Column(name = "last_name", nullable = false, length = 80)
 	private String lastName;
+	@Column(nullable = false, length = 100)
 	private String address;
-
-	@JsonIgnore
+	@Column(nullable = false, length = 6)
 	private String gender;
 
-	public PersonVO() {
+	public Person() {
 	}
 
 	public long getId() {
@@ -80,7 +85,7 @@ public class PersonVO implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		PersonVO other = (PersonVO) obj;
+		Person other = (Person) obj;
 		return Objects.equals(address, other.address) && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(gender, other.gender) && id == other.id && Objects.equals(lastName, other.lastName);
 	}
