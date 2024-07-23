@@ -2,12 +2,10 @@ package com.querobin.services;
 
 import com.querobin.controllers.BookController;
 import com.querobin.data.vo.v1.BookVO;
-import com.querobin.data.vo.v1.BookVO;
 import com.querobin.exceptions.RequiredObjectIsNullException;
 import com.querobin.exceptions.ResourceNotFoundException;
 import com.querobin.mapper.DozerMapper;
 import com.querobin.model.Book;
-import com.querobin.repositories.BookRepositories;
 import com.querobin.repositories.BookRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
